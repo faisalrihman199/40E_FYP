@@ -1,0 +1,94 @@
+.learning-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  min-height: 100vh;
+  max-width: 100vw;
+  background: linear-gradient(180deg, #0f0c29, #302b63, #24243e);
+  color: white;
+  font-family: 'Poppins', sans-serif;
+}
+
+.learning-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #c084fc;
+  text-align: center;
+}
+
+.learning-description {
+  max-width: 800px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #ddd;
+}
+
+.model-container {
+  width: 100%;
+  max-width: 600px;
+  height: 500px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(168, 85, 247, 0.2);
+}
+.touch-type {
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 0.4rem 1rem;
+  border-radius: 1rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.touch-type.good {
+  color: #22c55e;
+  background-color: rgba(34, 197, 94, 0.1);
+  border: 2px solid #22c55e;
+}
+
+.touch-type.bad {
+  color: #ef4444;
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 2px solid #ef4444;
+}
+.learning-nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  width: 100%;
+  max-width: 600px;
+  padding: 0 2rem;
+}
+.model-loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(15, 15, 30, 0.95);
+  z-index: 10;
+  border-radius: 15px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 5px solid rgba(255,255,255,0.2);
+  border-top: 5px solid #a855f7;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 0.5rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

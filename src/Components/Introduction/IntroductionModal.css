@@ -1,0 +1,83 @@
+.intro-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(6px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 50;
+  }
+  
+  .intro-modal {
+    background: #1e1e2e;
+    color: white;
+    padding: 2rem;
+    border-radius: 20px;
+    max-width: 600px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 0 30px rgba(168, 85, 247, 0.3);
+    position: relative;
+    animation: slideUp 0.5s ease-out;
+  }
+  
+  .intro-title {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+    color: #c084fc;
+  }
+  
+  .intro-text {
+    font-size: 1.05rem;
+    margin: 0.75rem 0;
+    line-height: 1.6;
+  }
+  
+  .intro-cta {
+    margin-top: 1.5rem;
+  }
+  
+  .intro-start-button {
+    background: linear-gradient(90deg, #9333ea, #a855f7);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+    transition: transform 0.2s ease;
+  }
+  
+  .intro-start-button:hover {
+    transform: scale(1.05);
+  }
+  
+  .intro-close-button {
+    position: absolute;
+    top: 1rem;
+    right: 1.25rem;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    color: #aaa;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  
+  .intro-close-button:hover {
+    color: white;
+  }
+  
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  

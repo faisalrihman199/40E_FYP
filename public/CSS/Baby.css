@@ -1,0 +1,128 @@
+.image-body-container {
+    text-align: center;
+    background: linear-gradient(to bottom right, #0d1b2a, #1a1a2e);
+    color: white;
+    padding: 1rem;
+    min-height: 100vh;
+  }
+  
+  .body-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 300px;
+  }
+  
+  .body-image {
+    width: 100%;
+    border-radius: 10px;
+  }
+  
+  /* Clickable transparent zones */
+  .zone {
+    position: absolute;
+    cursor: pointer;
+  }
+  
+  .zone.head {
+    top: 20px;
+    left: 100px;
+    width: 100px;
+    height: 20px;
+  }
+  .zone.mouth {
+    top: 45px;
+    left: 120px;
+    width: 60px;
+    height: 20px;
+  }
+  .zone.neck {
+    top: 70px;
+    left: 127px;
+    width: 45px;
+    height: 20px;
+  }
+  .zone.chest {
+    top: 90px;
+    left: 115px;
+    width: 80px;
+    height: 30px;
+  }
+  .zone.right-hand {
+    top: 80px;
+    left: 10px;
+    width: 40px;
+    height: 40px;
+  }
+  .zone.right-arm {
+    top: 80px;
+    left: 50px;
+    width: 50px;
+    height: 60px;
+  }
+  .zone.left-hand {
+    top: 80px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+  }
+  .zone.left-arm {
+    top: 80px;
+    right: 50px;
+    width: 50px;
+    height: 60px;
+  }
+  .zone.belly {
+    top: 125px;
+    left: 120px;
+    width: 80px;
+    height: 40px;
+  }
+  .zone.private {
+    top: 170px;
+    left: 110px;
+    width: 90px;
+    height: 30px;
+  }
+  .zone.right-thigh {
+    top: 200px;
+    left: 120px;
+    width: 30px;
+    height: 30px;
+  }
+  .zone.left-thigh {
+    top: 200px;
+    right: 110px;
+    width: 30px;
+    height: 30px;
+  }
+  .zone.right-leg {
+    top: 230px;
+    left: 120px;
+    width: 30px;
+    height: 40px;
+  }
+  .zone.left-leg {
+    top: 230px;
+    right: 110px;
+    width: 30px;
+    height: 40px;
+  }
+  .zone.right-foot {
+    top: 270px;
+    left: 110px;
+    width: 30px;
+    height: 20px;
+  }
+  .zone.left-foot {
+    top: 270px;
+    right: 100px;
+    width: 30px;
+    height: 20px;
+  }
+  
+  .feedback {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    color: white;
+  }
+  
