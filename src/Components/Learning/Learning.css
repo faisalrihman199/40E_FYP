@@ -2,20 +2,102 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem;
+  padding: 1.5rem;
   min-height: 100vh;
   max-width: 100vw;
-  background: linear-gradient(180deg, #0f0c29, #302b63, #24243e);
-  color: white;
-  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 20%, #ffdde1 40%, #ffb6c1 60%, #ff85a1 80%, #ffc1f0 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 20s ease infinite;
+  color: #7d2e68;
+  font-family: 'Poppins', 'Comic Sans MS', sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Add rainbow decorations - floating */
+.learning-page::before {
+  content: '�';
+  position: absolute;
+  font-size: 8rem;
+  top: 10%;
+  left: 5%;
+  opacity: 0.7;
+  animation: rainbowFloat 6s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes rainbowFloat {
+  0%, 100% { transform: translateY(0px) rotate(-10deg) scale(1); }
+  50% { transform: translateY(-25px) rotate(10deg) scale(1.05); }
+}
+
+/* Add cloud decoration */
+.learning-page::after {
+  content: '☁️';
+  position: absolute;
+  font-size: 6rem;
+  bottom: 15%;
+  right: 5%;
+  opacity: 0.6;
+  animation: cloudFloat 8s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes cloudFloat {
+  0%, 100% { transform: translateX(0px) translateY(0px); }
+  50% { transform: translateX(15px) translateY(-10px); }
 }
 
 .learning-title {
-  font-size: 2.5rem;
-  font-weight: 700;
+  font-size: 2.8rem;
+  font-weight: 900;
   margin-bottom: 1rem;
-  color: #c084fc;
+  color: #7d2e68;
   text-align: center;
+  text-shadow: 
+    3px 3px 0px #ff6b9d,
+    6px 6px 0px rgba(255, 105, 180, 0.4),
+    0 0 20px rgba(255, 182, 193, 0.8);
+  letter-spacing: 2px;
+  animation: titleBounce 2s ease-in-out infinite;
+  z-index: 2;
+  position: relative;
+}
+
+/* Add decorations to title */
+.learning-title::before {
+  content: '✨';
+  position: absolute;
+  left: -50px;
+  font-size: 2.5rem;
+  animation: sparkleRotate 3s linear infinite;
+}
+
+.learning-title::after {
+  content: '✨';
+  position: absolute;
+  right: -50px;
+  font-size: 2.5rem;
+  animation: sparkleRotate 3s linear infinite reverse;
+}
+
+@keyframes sparkleRotate {
+  0% { transform: rotate(0deg) scale(1); opacity: 0.7; }
+  50% { transform: rotate(180deg) scale(1.3); opacity: 1; }
+  100% { transform: rotate(360deg) scale(1); opacity: 0.7; }
+}
+
+@keyframes titleBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
 .learning-description {
@@ -23,39 +105,90 @@
   font-size: 1.1rem;
   line-height: 1.6;
   text-align: center;
-  margin-bottom: 2rem;
-  color: #ddd;
+  margin-bottom: 1.5rem;
+  color: #8b4789;
+  font-weight: 600;
+  text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
+  z-index: 2;
 }
 
 .model-container {
   width: 100%;
-  max-width: 600px;
-  height: 500px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 20px;
+  max-width: 650px;
+  height: 550px;
+  background: linear-gradient(145deg, #ffffff, #fff5f8);
+  border-radius: 30px;
   overflow: hidden;
-  box-shadow: 0 0 30px rgba(168, 85, 247, 0.2);
+  box-shadow: 
+    0 20px 60px rgba(255, 105, 180, 0.3),
+    0 0 40px rgba(255, 182, 193, 0.2),
+    inset 0 2px 0 rgba(255, 255, 255, 0.9);
+  border: 5px solid #ffc1f0;
+  z-index: 2;
+  position: relative;
+}
+
+/* Add decorative rainbow around model */
+.model-container::before {
+  content: '🌈';
+  position: absolute;
+  font-size: 5rem;
+  top: -35px;
+  left: -40px;
+  opacity: 0.7;
+  animation: rainbowFloat 7s ease-in-out infinite;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.model-container::after {
+  content: '☁️';
+  position: absolute;
+  font-size: 4rem;
+  bottom: -25px;
+  right: -30px;
+  opacity: 0.6;
+  animation: cloudFloat 9s ease-in-out infinite 1s;
+  z-index: -1;
+  pointer-events: none;
+}
+
+@keyframes cloudFloat {
+  0%, 100% { transform: translateX(0px) translateY(0px); }
+  50% { transform: translateX(20px) translateY(-15px); }
 }
 .touch-type {
-  font-size: 1.2rem;
-  font-weight: bold;
-  padding: 0.4rem 1rem;
-  border-radius: 1rem;
+  font-size: 1.4rem;
+  font-weight: 900;
+  padding: 0.6rem 1.5rem;
+  border-radius: 25px;
   margin-bottom: 1rem;
   text-align: center;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  animation: wiggle 0.5s ease;
+  z-index: 1;
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-2deg); }
+  75% { transform: rotate(2deg); }
 }
 
 .touch-type.good {
-  color: #22c55e;
-  background-color: rgba(34, 197, 94, 0.1);
-  border: 2px solid #22c55e;
+  color: #fff;
+  background: linear-gradient(145deg, #22c55e, #16a34a);
+  border: 3px solid #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .touch-type.bad {
-  color: #ef4444;
-  background-color: rgba(239, 68, 68, 0.1);
-  border: 2px solid #ef4444;
+  color: #fff;
+  background: linear-gradient(145deg, #ef4444, #dc2626);
+  border: 3px solid #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 .learning-nav-buttons {
   display: flex;
@@ -73,22 +206,61 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: rgba(15, 15, 30, 0.95);
+  background: rgba(255, 255, 255, 0.95);
   z-index: 10;
-  border-radius: 15px;
+  border-radius: 30px;
 }
 
 .spinner {
-  width: 40px;
-  height: 40px;
-  border: 5px solid rgba(255,255,255,0.2);
-  border-top: 5px solid #a855f7;
+  width: 50px;
+  height: 50px;
+  border: 6px solid rgba(255, 107, 157, 0.2);
+  border-top: 6px solid #ff6b9d;
   border-radius: 50%;
   animation: spin 1s linear infinite;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.model-loader p {
+  color: #ff6b9d;
+  font-weight: 700;
+  font-size: 1.1rem;
 }
 
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/* Back button styling */
+.back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: linear-gradient(145deg, #ffffff, #fff5f8);
+  border: 3px solid #ff69b4;
+  color: #ff69b4;
+  padding: 12px 24px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  z-index: 100;
+  box-shadow: 
+    0 5px 15px rgba(255, 105, 180, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.back-button:hover {
+  background: linear-gradient(145deg, #ff69b4, #ffb6c1);
+  color: white;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 
+    0 8px 25px rgba(255, 105, 180, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.back-button:active {
+  transform: translateY(0) scale(0.98);
 }

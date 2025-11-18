@@ -1,0 +1,675 @@
+{
+  "info": {
+    "name": "Sakina Backend API",
+    "description": "Complete API collection for Sakina child safety learning app backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000/api",
+      "type": "string"
+    },
+    {
+      "key": "accessToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "refreshToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"parent@example.com\",\n  \"password\": \"SecurePass123\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"childName\": \"Emma\",\n  \"childAge\": 7\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();",
+                  "if (response.success && response.data) {",
+                  "  pm.collectionVariables.set('accessToken', response.data.accessToken);",
+                  "  pm.collectionVariables.set('refreshToken', response.data.refreshToken);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"parent@example.com\",\n  \"password\": \"SecurePass123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Verify Email",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"verification_token_from_email\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/verify-email",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "verify-email"]
+            }
+          }
+        },
+        {
+          "name": "Resend Verification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"parent@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/resend-verification",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "resend-verification"]
+            }
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"parent@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/forgot-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "forgot-password"]
+            }
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"reset_token_from_email\",\n  \"newPassword\": \"NewSecurePass123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/reset-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "reset-password"]
+            }
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const response = pm.response.json();",
+                  "if (response.success && response.data) {",
+                  "  pm.collectionVariables.set('accessToken', response.data.accessToken);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/refresh-token",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "refresh-token"]
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "logout"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "User Management",
+      "item": [
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "profile"]
+            }
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"childName\": \"Emma\",\n  \"childAge\": 8\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/profile",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "profile"]
+            }
+          }
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"SecurePass123\",\n  \"newPassword\": \"NewSecurePass456\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/change-password",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "change-password"]
+            }
+          }
+        },
+        {
+          "name": "Deactivate Account",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"password\": \"SecurePass123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/deactivate",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "deactivate"]
+            }
+          }
+        },
+        {
+          "name": "Delete Account",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"password\": \"SecurePass123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/delete",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "delete"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Parental Controls",
+      "item": [
+        {
+          "name": "Verify PIN",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pin\": \"1234\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/parental/verify-pin",
+              "host": ["{{baseUrl}}"],
+              "path": ["parental", "verify-pin"]
+            }
+          }
+        },
+        {
+          "name": "Update PIN",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPin\": \"1234\",\n  \"newPin\": \"5678\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/parental/update-pin",
+              "host": ["{{baseUrl}}"],
+              "path": ["parental", "update-pin"]
+            }
+          }
+        },
+        {
+          "name": "Get Settings",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/parental/settings",
+              "host": ["{{baseUrl}}"],
+              "path": ["parental", "settings"]
+            }
+          }
+        },
+        {
+          "name": "Update Settings",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sessionTimeLimit\": 30,\n  \"dailyTimeLimit\": 120,\n  \"allowedDays\": [0, 1, 2, 3, 4, 5, 6],\n  \"allowedTimeStart\": \"08:00:00\",\n  \"allowedTimeEnd\": \"20:00:00\",\n  \"blockInappropriateContent\": true,\n  \"requirePinForSettings\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/parental/settings",
+              "host": ["{{baseUrl}}"],
+              "path": ["parental", "settings"]
+            }
+          }
+        },
+        {
+          "name": "Get Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/parental/dashboard",
+              "host": ["{{baseUrl}}"],
+              "path": ["parental", "dashboard"]
+            }
+          }
+        },
+        {
+          "name": "Clear All Data",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pin\": \"1234\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/parental/clear-data",
+              "host": ["{{baseUrl}}"],
+              "path": ["parental", "clear-data"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Progress Tracking",
+      "item": [
+        {
+          "name": "Log Game Session",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"gameName\": \"Body Parts Touch Game\",\n  \"gameType\": \"body_touch\",\n  \"score\": 85,\n  \"correctAnswers\": 17,\n  \"wrongAnswers\": 3,\n  \"totalAttempts\": 20,\n  \"durationMinutes\": 5\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/progress/game",
+              "host": ["{{baseUrl}}"],
+              "path": ["progress", "game"]
+            }
+          }
+        },
+        {
+          "name": "Log Learning Progress",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"moduleName\": \"Body Parts Learning\",\n  \"moduleType\": \"body_parts\",\n  \"itemsViewed\": 10,\n  \"durationMinutes\": 8,\n  \"isCompleted\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/progress/learning",
+              "host": ["{{baseUrl}}"],
+              "path": ["progress", "learning"]
+            }
+          }
+        },
+        {
+          "name": "Get Game Sessions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/progress/games?limit=20&offset=0&gameType=body_touch",
+              "host": ["{{baseUrl}}"],
+              "path": ["progress", "games"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                },
+                {
+                  "key": "gameType",
+                  "value": "body_touch"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Learning Progress",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/progress/learning?moduleType=body_parts",
+              "host": ["{{baseUrl}}"],
+              "path": ["progress", "learning"],
+              "query": [
+                {
+                  "key": "moduleType",
+                  "value": "body_parts"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Activity Logs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/progress/activities?limit=50&activityType=game",
+              "host": ["{{baseUrl}}"],
+              "path": ["progress", "activities"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "50"
+                },
+                {
+                  "key": "activityType",
+                  "value": "game"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Analytics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/progress/analytics?period=7",
+              "host": ["{{baseUrl}}"],
+              "path": ["progress", "analytics"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "7"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Progress Summary",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/progress/summary",
+              "host": ["{{baseUrl}}"],
+              "path": ["progress", "summary"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/health",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "health"]
+        }
+      }
+    }
+  ]
+}

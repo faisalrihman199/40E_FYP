@@ -5,6 +5,7 @@ import { OrbitControls } from '@react-three/drei';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { Box3, Vector3 } from 'three';
 import { IoChevronBackCircleOutline, IoChevronForwardCircleOutline } from 'react-icons/io5';
+import { useAppContext } from '../../Contexts/AppContext';
 
 // Loader Component
 const Loader = () => (
@@ -55,10 +56,33 @@ const ModelViewer = ({ path, onLoad }) => {
   );
 };
 
-const LearningComponent = ({ dataList }) => {
+const LearningComponent = ({ dataList, onBack }) => {
+  const { logLearningActivity } = useAppContext();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [viewedItems, setViewedItems] = useState(new Set());
+  const sessionStartTime = useRef(Date.now());
   const data = dataList[currentIndex];
+
+  // Track viewed items and log when component unmounts
+  useEffect(() => {
+    setViewedItems(prev => new Set([...prev, currentIndex]));
+  }, [currentIndex]);
+
+  useEffect(() => {
+    return () => {
+      const sessionDuration = Math.round((Date.now() - sessionStartTime.current) / 60000);
+      if (viewedItems.size > 0) {
+        logLearningActivity({
+          moduleName: `Object Learning - ${viewedItems.size} items viewed`,
+          moduleType: 'objects',
+          itemsViewed: viewedItems.size,
+          durationMinutes: Math.max(1, sessionDuration),
+          isCompleted: false
+        });
+      }
+    };
+  }, [viewedItems, logLearningActivity]);
 
   const handleNext = () => {
     setLoading(true);
@@ -72,9 +96,27 @@ const LearningComponent = ({ dataList }) => {
 
   return (
     <div className="learning-page">
+      {onBack && (
+        <button className="back-button" onClick={() => {
+          // Log learning session before going back
+          const sessionDuration = Math.round((Date.now() - sessionStartTime.current) / 60000);
+          if (viewedItems.size > 0) {
+            logLearningActivity({
+              moduleName: `Object Learning - ${viewedItems.size} items viewed`,
+              moduleType: 'objects',
+              itemsViewed: viewedItems.size,
+              durationMinutes: Math.max(1, sessionDuration),
+              isCompleted: false
+            });
+          }
+          onBack();
+        }}>
+          ← Back
+        </button>
+      )}
       <h2 className="learning-title">{data.title}</h2>
       <div className={`touch-type ${data.touch}`}>
-        {data.touch === 'good' ? '✅ Good Touch' : '❌ Bad Touch'}
+        {data.touch === 'good' ? '✅ Good' : '❌ Bad'}
       </div>
 
       <p className="learning-description">{data.description}</p>

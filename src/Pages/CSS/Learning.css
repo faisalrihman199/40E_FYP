@@ -2,76 +2,313 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 2rem;
+    justify-content: center;
+    padding: 1.5rem;
     min-height: 100vh;
-    background: linear-gradient(to bottom right, #1b1d2e, #282a3f);
-    color: white;
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 20%, #ffdde1 40%, #ffb6c1 60%, #ff85a1 80%, #ffc1f0 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 20s ease infinite;
+    color: #7d2e68;
+    position: relative;
+    overflow: hidden;
+  }
+
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Abundant floating stars */
+  .modal::before {
+    content: '⭐ ✨ 🌟 💫 ⭐ ✨ 🌟 💫 ⭐ ✨';
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    font-size: 3rem;
+    display: flex;
+    justify-content: space-around;
+    opacity: 0;
+    animation: starsTopToBottom 8s linear infinite;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  @keyframes starsTopToBottom {
+    0% { opacity: 0; transform: translateY(-100px) rotate(0deg); }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(100vh) rotate(360deg); }
+  }
+
+  /* Rainbow decorations */
+  .modal::after {
+    content: '🌈';
+    position: absolute;
+    font-size: 8rem;
+    bottom: 3%;
+    right: 2%;
+    opacity: 0.8;
+    animation: rainbowBounce 5s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  @keyframes rainbowBounce {
+    0%, 100% { transform: translateY(0px) rotate(-10deg) scale(1); }
+    50% { transform: translateY(-30px) rotate(10deg) scale(1.05); }
+  }
+
+  /* Additional decorative clouds */
+  .modal-cards::before {
+    content: '☁️';
+    position: absolute;
+    font-size: 5rem;
+    top: -50px;
+    left: 5%;
+    opacity: 0.6;
+    animation: cloudFloat 8s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .modal-cards::after {
+    content: '☁️';
+    position: absolute;
+    font-size: 6rem;
+    top: -30px;
+    right: 8%;
+    opacity: 0.5;
+    animation: cloudFloat 10s ease-in-out infinite 2s;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes cloudFloat {
+    0%, 100% { transform: translateX(0px) translateY(0px); }
+    50% { transform: translateX(20px) translateY(-15px); }
+  }
+
+  /* Extra rainbow decoration on left */
+  .modal-title::before {
+    content: '🌈';
+    position: absolute;
+    font-size: 6rem;
+    left: -80px;
+    top: 50%;
+    transform: translateY(-50%) rotate(-20deg);
+    opacity: 0.7;
+    animation: rainbowBounce 6s ease-in-out infinite 1s;
+  }
+
+  /* Rainbow decorations */
+  .modal::after {
+    content: '�';
+    position: absolute;
+    font-size: 6rem;
+    bottom: 5%;
+    right: 3%;
+    opacity: 0.7;
+    animation: rainbowBounce 5s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  @keyframes rainbowBounce {
+    0%, 100% { transform: translateY(0px) rotate(-10deg); }
+    50% { transform: translateY(-25px) rotate(10deg); }
   }
   
   .modal-title {
-    font-size: 1.6rem;
+    font-size: 3rem;
+    font-weight: 900;
     margin-bottom: 1.5rem;
     text-align: center;
+    color: #7d2e68;
+    text-shadow: 
+      3px 3px 0px #ff6b9d,
+      6px 6px 0px rgba(255, 105, 180, 0.4),
+      0 0 20px rgba(255, 182, 193, 0.8);
+    letter-spacing: 2px;
+    animation: titleGlow 2s ease-in-out infinite;
+    z-index: 2;
+    position: relative;
+  }
+
+  /* Add extra decorations to title */
+  .modal-title::before {
+    content: '✨';
+    position: absolute;
+    left: -50px;
+    font-size: 2rem;
+    animation: sparkleLeft 3s ease-in-out infinite;
+  }
+
+  .modal-title::after {
+    content: '✨';
+    position: absolute;
+    right: -50px;
+    font-size: 2rem;
+    animation: sparkleRight 3s ease-in-out infinite;
+  }
+
+  @keyframes sparkleLeft {
+    0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.5; }
+    50% { transform: translateY(-15px) rotate(180deg); opacity: 1; }
+  }
+
+  @keyframes sparkleRight {
+    0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.5; }
+    50% { transform: translateY(15px) rotate(-180deg); opacity: 1; }
+  }
+
+  @keyframes titleGlow {
+    0%, 100% { transform: translateY(0); text-shadow: 3px 3px 0px #ff6b9d, 6px 6px 0px rgba(255, 105, 180, 0.4), 0 0 20px rgba(255, 182, 193, 0.8); }
+    50% { transform: translateY(-10px); text-shadow: 3px 3px 0px #ff6b9d, 6px 6px 0px rgba(255, 105, 180, 0.6), 0 0 30px rgba(255, 182, 193, 1), 0 0 40px rgba(255, 105, 180, 0.5); }
   }
   
   .modal-cards {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 2rem;
     justify-content: center;
+    max-width: 1200px;
+    z-index: 2;
   }
   
   .modal-card {
-    background: rgba(255, 255, 255, 0.08);
-    padding: 1rem;
-    width: 180px;
-    border-radius: 12px;
+    background: linear-gradient(145deg, rgba(255, 240, 245, 0.98), rgba(255, 228, 240, 0.95));
+    padding: 2rem;
+    width: 280px;
+    height: 320px;
+    border-radius: 30px;
     cursor: pointer;
     font-weight: bold;
-    transition: 0.2s ease;
-    border: 2px solid transparent;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    border: 5px solid rgba(255, 105, 180, 0.6);
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     text-align: center;
+    box-shadow: 
+      0 15px 50px rgba(255, 105, 180, 0.5),
+      0 0 30px rgba(255, 182, 193, 0.3),
+      inset 0 2px 0 rgba(255, 255, 255, 0.9);
+    position: relative;
+    overflow: visible;
+  }
+
+  /* Add stars around cards */
+  .modal-card::before {
+    content: '⭐';
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    font-size: 2rem;
+    animation: cardStarSpin 4s linear infinite;
+  }
+
+  .modal-card::after {
+    content: '✨';
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    font-size: 2rem;
+    animation: cardStarSpin 4s linear infinite reverse;
+  }
+
+  @keyframes cardStarSpin {
+    0% { transform: rotate(0deg) scale(1); opacity: 0.6; }
+    50% { transform: rotate(180deg) scale(1.3); opacity: 1; }
+    100% { transform: rotate(360deg) scale(1); opacity: 0.6; }
   }
   
   .modal-card:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: #a855f7;
+    background: linear-gradient(145deg, #fff, rgba(255, 240, 245, 1));
+    transform: translateY(-15px) scale(1.1) rotate(2deg);
+    box-shadow: 
+      0 20px 70px rgba(255, 105, 180, 0.7),
+      0 0 50px rgba(255, 182, 193, 0.5),
+      inset 0 2px 0 rgba(255, 255, 255, 0.9);
+    border-color: #ff69b4;
+  }
+
+  .modal-card:hover::before,
+  .modal-card:hover::after {
+    animation-duration: 2s;
+    opacity: 1;
   }
   
   .modal-icon {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
+    font-size: 5rem;
+    margin-bottom: 1.2rem;
+    filter: drop-shadow(3px 3px 8px rgba(255, 105, 180, 0.4));
+    animation: iconBounceGlow 2s ease-in-out infinite;
+  }
+
+  @keyframes iconBounceGlow {
+    0%, 100% { transform: scale(1) translateY(0); filter: drop-shadow(3px 3px 8px rgba(255, 105, 180, 0.4)); }
+    50% { transform: scale(1.15) translateY(-10px); filter: drop-shadow(0 0 20px rgba(255, 105, 180, 0.8)) drop-shadow(0 0 30px rgba(255, 182, 193, 0.6)); }
   }
   
   .modal-label {
-    font-size: 1.2rem;
-    margin-bottom: 0.25rem;
+    font-size: 1.6rem;
+    font-weight: 900;
+    margin-bottom: 0.8rem;
+    color: #7d2e68;
+    text-shadow: 2px 2px 4px rgba(255, 105, 180, 0.3);
   }
   
   .modal-desc {
-    font-size: 0.85rem;
-    color: #ccc;
+    font-size: 1.05rem;
+    color: #8b4789;
+    font-weight: 600;
+    line-height: 1.4;
   }
+  
   .modal-back {
-    align-self: flex-start;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1rem;
-    margin-bottom: 1rem;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: linear-gradient(145deg, rgba(255, 240, 245, 0.95), rgba(255, 228, 240, 0.9));
+    border: 4px solid #ff69b4;
+    color: #7d2e68;
+    font-size: 1.2rem;
+    font-weight: 900;
+    padding: 14px 28px;
+    border-radius: 25px;
     cursor: pointer;
-    transition: color 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    box-shadow: 
+      0 8px 25px rgba(255, 105, 180, 0.4),
+      0 0 20px rgba(255, 182, 193, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    z-index: 10;
   }
+  
   .modal-back:hover {
-    color: #a855f7;
+    background: linear-gradient(145deg, #ff69b4, #ffb6c1);
+    color: #fff;
+    transform: translateY(-5px) scale(1.08);
+    box-shadow: 
+      0 12px 35px rgba(255, 105, 180, 0.6),
+      0 0 30px rgba(255, 182, 193, 0.5);
+    border-color: #ffb6c1;
   }
+
+  .modal-back:active {
+    transform: translateY(0) scale(0.98);
+  }
+
   .loader {
     color: white;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
+    font-weight: bold;
     margin-top: 2rem;
     text-align: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    z-index: 1;
   }
   

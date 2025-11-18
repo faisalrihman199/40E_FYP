@@ -7,10 +7,24 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
+**/node_modules
+server/node_modules
+
+# Build outputs
 dist
 dist-ssr
 *.local
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env.test
+server/.env
+server/.env.local
+server/.env.production
 
 # Editor directories and files
 .vscode/*
@@ -22,3 +36,25 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local Netlify folder
+.netlify
+
+# Server specific
+server/logs/
+server/uploads/
+server/dist/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Package locks (optional - uncomment if you want to ignore)
+# package-lock.json
+# yarn.lock
+# server/package-lock.json

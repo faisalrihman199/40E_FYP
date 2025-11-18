@@ -1,8 +1,8 @@
 .intro-modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.75);
-    backdrop-filter: blur(6px);
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -10,64 +10,85 @@
   }
   
   .intro-modal {
-    background: #1e1e2e;
-    color: white;
-    padding: 2rem;
-    border-radius: 20px;
-    max-width: 600px;
+    background: linear-gradient(145deg, #ff9a9e, #fecfef);
+    color: #333;
+    padding: 2.5rem;
+    border-radius: 30px;
+    max-width: 650px;
     width: 90%;
     text-align: center;
-    box-shadow: 0 0 30px rgba(168, 85, 247, 0.3);
+    box-shadow: 
+      0 20px 60px rgba(255, 105, 180, 0.4),
+      inset 0 2px 0 rgba(255, 255, 255, 0.9);
+    border: 4px solid #fff;
     position: relative;
     animation: slideUp 0.5s ease-out;
   }
   
   .intro-title {
-    font-size: 1.75rem;
+    font-size: 2.5rem;
+    font-weight: 900;
     margin-bottom: 1rem;
-    color: #c084fc;
+    color: #7d2e68;
+    text-shadow: 2px 2px 0px rgba(255, 105, 180, 0.2);
   }
   
   .intro-text {
-    font-size: 1.05rem;
+    font-size: 1.15rem;
     margin: 0.75rem 0;
-    line-height: 1.6;
+    line-height: 1.8;
+    color: #8b4789;
+    font-weight: 500;
   }
   
   .intro-cta {
-    margin-top: 1.5rem;
+    margin-top: 2rem;
   }
   
   .intro-start-button {
-    background: linear-gradient(90deg, #9333ea, #a855f7);
+    background: linear-gradient(145deg, #ff69b4, #ffb6c1);
     color: white;
-    padding: 0.75rem 1.5rem;
-    font-weight: bold;
+    padding: 1rem 2rem;
+    font-weight: 900;
+    font-size: 1.2rem;
     border: none;
-    border-radius: 10px;
+    border-radius: 25px;
     cursor: pointer;
-    box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
-    transition: transform 0.2s ease;
+    box-shadow: 
+      0 8px 30px rgba(255, 105, 180, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
   }
   
   .intro-start-button:hover {
-    transform: scale(1.05);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 
+      0 12px 40px rgba(255, 105, 180, 0.6),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  }
+
+  .intro-start-button:active {
+    transform: translateY(0) scale(0.98);
   }
   
   .intro-close-button {
     position: absolute;
     top: 1rem;
     right: 1.25rem;
-    font-size: 1.5rem;
+    font-size: 2rem;
     background: none;
     border: none;
-    color: #aaa;
+    color: #ff69b4;
     cursor: pointer;
-    transition: color 0.2s;
+    transition: all 0.3s;
+    font-weight: bold;
   }
   
   .intro-close-button:hover {
-    color: white;
+    color: #ff85a1;
+    transform: scale(1.2) rotate(90deg);
   }
   
   @keyframes slideUp {

@@ -5,10 +5,19 @@ import './CSS/Learning.css'; // reuse modal styles
 
 const Game = () => {
   const [step, setStep] = useState('selectMode');
-  const [subtype, setSubtype] = useState(null);
-  const [type, setType] = useState(null);
+  const [userGender, setUserGender] = useState(null); // Changed from subtype to userGender
+  const [touchByType, setTouchByType] = useState(null); // Changed from type to touchByType
   const audioRef = useRef(null);
-
+   useEffect(() => {
+      audioRef.current = new Audio('/learning.mp3');
+      audioRef.current.loop = true;
+      audioRef.current.play().catch(() => {});
+  
+      return () => {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      };
+    }, []);
 
 
   const bodyLearning = {
@@ -35,9 +44,9 @@ const Game = () => {
   };
 
   const goBack = () => {
-    if (step === 'subtype') setStep('selectMode');
-    else if (step === 'type') setStep('subtype');
-    else if (step === 'body') setStep('type');
+    if (step === 'userGender') setStep('selectMode');
+    else if (step === 'touchByType') setStep('userGender');
+    else if (step === 'body') setStep('touchByType');
   };
 
   const playClick = () => {
@@ -48,12 +57,13 @@ const Game = () => {
   const cardContent = {
     objects: { icon: '🧸', desc: 'Play touch game with objects.' },
     body: { icon: '🧍‍♂️', desc: 'Play touch game with body zones.' },
-    stranger: { icon: '🚫', desc: 'Touched by someone unfamiliar.' },
-    known: { icon: '✅', desc: 'Touched by someone trusted.' },
-    man: { icon: '👨', desc: 'Body model of a man.' },
-    woman: { icon: '👩', desc: 'Body model of a woman.' },
-    child: { icon: '👶', desc: 'Body model of a baby.' },
-    girl: { icon: '👧', desc: 'Body model of a young girl.' },
+    'man': { icon: '👨', desc: 'Body model of a man.' },
+    'woman': { icon: '👩', desc: 'Body model of a woman.' },
+    'child': { icon: '👶', desc: 'Body model of a baby.' },
+    'girl': { icon: '👧', desc: 'Body model of a young girl.' },
+    
+    'touch by man': { icon: '👨', desc: 'Play touch scenarios with men.' },
+    'touch by woman': { icon: '👩', desc: 'Play touch scenarios with women.' },
   };
 
   const renderCards = (options, onClick, showBack = true) => (
@@ -86,21 +96,28 @@ const Game = () => {
   );
 
   if (step === 'selectMode') {
-    return renderCards(['Objects', 'Body'], (choice) => {
-      setStep(choice === 'objects' ? 'objects' : 'subtype');
+    // Show both Body and Objects options
+    return renderCards(['Body', 'Objects'], (choice) => {
+      if (choice === 'objects') {
+        setStep('objects');
+      } else {
+        setStep('userGender');
+      }
     }, false);
   }
 
-  if (step === 'subtype') {
-    return renderCards(['Stranger', 'Known'], (s) => {
-      setSubtype(s);
-      setStep('type');
+  if (step === 'userGender') {
+    return renderCards(['Girl', 'Child'], (selectedGender) => {
+      setUserGender(selectedGender);
+      setStep('touchByType');
     });
   }
 
-  if (step === 'type') {
-    return renderCards(['Man', 'Woman', 'Child', 'Girl'], (t) => {
-      setType(t);
+  if (step === 'touchByType') {
+    // Show only Touch by Man and Touch by Woman
+    const options = ['Touch by Man', 'Touch by Woman'];
+    return renderCards(options, (selectedTouchType) => {
+      setTouchByType(selectedTouchType);
       setStep('body');
     });
   }
@@ -109,14 +126,20 @@ const Game = () => {
     return <TouchGame />;
   }
 
-  if (step === 'body' && type && subtype) {
-    const props = bodyLearning[type];
+  if (step === 'body' && touchByType && userGender) {
+    // Always show the user's selected body type (girl or child)
+    // The touch scenario determines if it's stranger or known
+    let bodyType = userGender === 'girl' ? 'girl' : 'child';
+    let subtype = 'stranger'; // Always stranger for man/woman touches
+
+    const props = bodyLearning[bodyType];
     return (
       <BoxyBody
         image_path={props.image_path}
         cssName={props.cssName}
         type={props.type}
         subtype={subtype}
+        touchByType={touchByType}
         game={true}
       />
     );

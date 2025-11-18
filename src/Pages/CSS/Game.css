@@ -1,37 +1,252 @@
 .touchgame-container {
     min-height: 100vh;
-    padding: 1rem;
-    background: linear-gradient(to bottom right, #0d1b2a, #1a1a2e);
-    color: white;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 20%, #ffdde1 40%, #ffb6c1 60%, #ff85a1 80%, #ffc1f0 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 20s ease infinite;
+    color: #7d2e68;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .back-button-game {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    padding: 0.8rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 800;
+    background: linear-gradient(145deg, #ff69b4, #ff85a1);
+    color: white;
+    border: 3px solid white;
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: 
+      0 6px 20px rgba(255, 105, 180, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    z-index: 100;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .back-button-game:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 
+      0 10px 30px rgba(255, 105, 180, 0.6),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    background: linear-gradient(145deg, #ff85a1, #ff69b4);
+  }
+
+  .back-button-game:active {
+    transform: translateY(-1px) scale(1.02);
+  }
+
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Add abundant floating stars */
+  .touchgame-container::before {
+    content: '⭐ ✨ 🌟 💫 ⭐ ✨ �';
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    font-size: 3rem;
+    display: flex;
+    justify-content: space-around;
+    opacity: 0;
+    animation: starsTopToBottom 8s linear infinite;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  @keyframes starsTopToBottom {
+    0% { opacity: 0; transform: translateY(-100px) rotate(0deg); }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(100vh) rotate(360deg); }
+  }
+
+  .touchgame-container::after {
+    content: '🌈';
+    position: absolute;
+    font-size: 6rem;
+    bottom: 5%;
+    left: 3%;
+    opacity: 0.8;
+    animation: rainbowFloat 6s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  @keyframes rainbowFloat {
+    0%, 100% { transform: translateY(0px) rotate(-15deg) scale(1); }
+    50% { transform: translateY(-25px) rotate(15deg) scale(1.05); }
+  }
+
+  /* Additional decorative clouds and rainbows */
+  .touchgame-header::before {
+    content: '☁️';
+    position: absolute;
+    font-size: 5rem;
+    top: -60px;
+    left: -80px;
+    opacity: 0.5;
+    animation: cloudFloat 8s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .touchgame-header::after {
+    content: '🌈';
+    position: absolute;
+    font-size: 7rem;
+    top: -40px;
+    right: -100px;
+    opacity: 0.6;
+    animation: rainbowFloat 7s ease-in-out infinite 1s;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes cloudFloat {
+    0%, 100% { transform: translateX(0px) translateY(0px); }
+    50% { transform: translateX(15px) translateY(-10px); }
+  }
+
+  /* Extra decorations around model box */
+  .model-box::before {
+    content: '☁️';
+    position: absolute;
+    font-size: 4rem;
+    bottom: -40px;
+    left: -50px;
+    opacity: 0.5;
+    animation: cloudFloat 10s ease-in-out infinite 2s;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .model-box::after {
+    content: '✨';
+    position: absolute;
+    font-size: 3rem;
+    top: -30px;
+    right: -40px;
+    opacity: 0.7;
+    animation: sparkleRotate 4s linear infinite;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  @keyframes sparkleRotate {
+    0% { transform: rotate(0deg) scale(1); opacity: 0.5; }
+    50% { transform: rotate(180deg) scale(1.3); opacity: 1; }
+    100% { transform: rotate(360deg) scale(1); opacity: 0.5; }
   }
   
   .touchgame-header {
     text-align: center;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    z-index: 2;
+    position: relative;
+  }
+
+  .touchgame-header h1 {
+    font-size: 2.8rem;
+    font-weight: 900;
+    color: #7d2e68;
+    text-shadow: 
+      3px 3px 0px #ff6b9d,
+      6px 6px 0px rgba(255, 105, 180, 0.4),
+      0 0 20px rgba(255, 182, 193, 0.8);
+    animation: titleBounceGlow 2s ease-in-out infinite;
+  }
+
+  /* Add stars around title */
+  .touchgame-header h1::before {
+    content: '✨';
+    position: absolute;
+    left: -40px;
+    font-size: 2rem;
+    animation: sparkleSpin 3s linear infinite;
+  }
+
+  .touchgame-header h1::after {
+    content: '✨';
+    position: absolute;
+    right: -40px;
+    font-size: 2rem;
+    animation: sparkleSpin 3s linear infinite reverse;
+  }
+
+  @keyframes sparkleSpin {
+    0% { transform: rotate(0deg) scale(1); opacity: 0.7; }
+    50% { transform: rotate(180deg) scale(1.3); opacity: 1; }
+    100% { transform: rotate(360deg) scale(1); opacity: 0.7; }
+  }
+
+  @keyframes titleBounceGlow {
+    0%, 100% { transform: translateY(0); text-shadow: 3px 3px 0px #ff6b9d, 6px 6px 0px rgba(255, 105, 180, 0.4), 0 0 20px rgba(255, 182, 193, 0.8); }
+    50% { transform: translateY(-10px); text-shadow: 3px 3px 0px #ff6b9d, 6px 6px 0px rgba(255, 105, 180, 0.6), 0 0 30px rgba(255, 182, 193, 1), 0 0 40px rgba(255, 105, 180, 0.5); }
   }
   
   .model-box {
     width: 90vw;
-    max-width: 400px;
-    height: 300px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 1rem;
+    max-width: 550px;
+    height: 450px;
+    background: linear-gradient(145deg, #ffffff, #fff5f8);
+    border-radius: 30px;
     overflow: hidden;
     position: relative;
+    box-shadow: 
+      0 20px 60px rgba(255, 105, 180, 0.3),
+      0 0 40px rgba(255, 182, 193, 0.2),
+      inset 0 2px 0 rgba(255, 255, 255, 0.9);
+    border: 5px solid #ffc1f0;
+    z-index: 2;
   }
   
   .touchgame-description {
-    margin: 1rem 0;
+    margin: 1.2rem 0;
     text-align: center;
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-shadow: 
+      0 0 10px rgba(255, 105, 180, 0.5),
+      2px 2px 4px rgba(0, 0, 0, 0.3);
+    z-index: 2;
   }
   
   .feedback {
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin-top: 0.5rem;
+    font-size: 1.8rem;
+    font-weight: 900;
+    margin-top: 0.8rem;
+    text-shadow: 
+      0 0 15px rgba(255, 105, 180, 0.7),
+      3px 3px 6px rgba(0, 0, 0, 0.3);
+    animation: feedbackWiggle 0.5s ease;
+    z-index: 2;
+  }
+
+  @keyframes feedbackWiggle {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    25% { transform: rotate(-5deg) scale(1.1); }
+    75% { transform: rotate(5deg) scale(1.1); }
+  }
+
+  @keyframes wiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-5deg); }
+    75% { transform: rotate(5deg); }
   }
   
   .touchgame-buttons {
@@ -40,25 +255,76 @@
     gap: 1rem;
     width: 90vw;
     max-width: 400px;
+    z-index: 1;
+    position: relative;
+  }
+
+  /* Decorative elements around buttons */
+  .touchgame-buttons::before {
+    content: '⭐';
+    position: absolute;
+    font-size: 3rem;
+    top: -30px;
+    left: -40px;
+    opacity: 0.6;
+    animation: sparkleRotate 5s linear infinite;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .touchgame-buttons::after {
+    content: '💫';
+    position: absolute;
+    font-size: 3.5rem;
+    bottom: -30px;
+    right: -40px;
+    opacity: 0.7;
+    animation: sparkleRotate 6s linear infinite reverse;
+    pointer-events: none;
+    z-index: -1;
   }
   
   .touchgame-buttons button {
-    padding: 1rem;
-    font-size: 1rem;
-    border-radius: 10px;
-    font-weight: bold;
-    border: none;
+    padding: 1.2rem;
+    font-size: 1.2rem;
+    font-weight: 900;
+    border-radius: 25px;
+    border: 4px solid white;
     cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 
+      0 8px 25px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
   }
   
   button.good {
-    background-color: #22c55e;
+    background: linear-gradient(145deg, #22c55e, #16a34a);
     color: white;
+  }
+
+  button.good:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 
+      0 12px 35px rgba(34, 197, 94, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
   }
   
   button.bad {
-    background-color: #ef4444;
+    background: linear-gradient(145deg, #ef4444, #dc2626);
     color: white;
+  }
+
+  button.bad:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 
+      0 12px 35px rgba(239, 68, 68, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  }
+
+  .touchgame-buttons button:active {
+    transform: translateY(0) scale(0.98);
   }
   
   .model-loader {
@@ -68,18 +334,25 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: rgba(15, 15, 30, 0.9);
+    background: rgba(255, 255, 255, 0.95);
     z-index: 10;
+    border-radius: 30px;
   }
   
   .spinner {
-    width: 40px;
-    height: 40px;
-    border: 5px solid rgba(255,255,255,0.2);
-    border-top: 5px solid #a855f7;
+    width: 50px;
+    height: 50px;
+    border: 6px solid rgba(255, 107, 157, 0.2);
+    border-top: 6px solid #ff6b9d;
     border-radius: 50%;
     animation: spin 1s linear infinite;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .model-loader p {
+    color: #ff6b9d;
+    font-weight: 700;
+    font-size: 1.1rem;
   }
   
   @keyframes spin {

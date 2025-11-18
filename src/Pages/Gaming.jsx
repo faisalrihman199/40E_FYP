@@ -3,6 +3,8 @@ import { Canvas, useThree, useLoader } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import * as THREE from 'three';
+import { useNavigate } from 'react-router-dom';
+import { useAppContext } from '../Contexts/AppContext';
 import './CSS/Game.css';
 
 const learningItems = [
@@ -71,19 +73,69 @@ const ModelViewer = ({ path, onLoad }) => {
 };
 
 const TouchGame = () => {
+  const navigate = useNavigate();
+  const { logGameActivity } = useAppContext();
   const [index, setIndex] = useState(0);
   const [score, setScore] = useState(0);
+  const [correctAnswers, setCorrectAnswers] = useState(0);
+  const [wrongAnswers, setWrongAnswers] = useState(0);
   const [feedback, setFeedback] = useState('');
   const [loading, setLoading] = useState(true);
+  const sessionStartTime = useRef(Date.now());
 
   const currentItem = learningItems[index];
+
+  // Log game session on unmount
+  useEffect(() => {
+    return () => {
+      const sessionDuration = Math.round((Date.now() - sessionStartTime.current) / 60000);
+      const totalAttempts = correctAnswers + wrongAnswers;
+      
+      if (totalAttempts > 0) {
+        logGameActivity({
+          gameName: 'Touch Identifier Game - Objects',
+          gameType: 'object_recognition',
+          score: Math.round((correctAnswers / totalAttempts) * 100),
+          correctAnswers,
+          wrongAnswers,
+          totalAttempts,
+          durationMinutes: Math.max(1, sessionDuration)
+        });
+      }
+    };
+  }, [correctAnswers, wrongAnswers, logGameActivity]);
+
+  const handleBack = () => {
+    // Log game session before leaving
+    const sessionDuration = Math.round((Date.now() - sessionStartTime.current) / 60000);
+    const totalAttempts = correctAnswers + wrongAnswers;
+    
+    if (totalAttempts > 0) {
+      logGameActivity({
+        gameName: 'Touch Identifier Game - Objects',
+        gameType: 'object_recognition',
+        score: Math.round((correctAnswers / totalAttempts) * 100),
+        correctAnswers,
+        wrongAnswers,
+        totalAttempts,
+        durationMinutes: Math.max(1, sessionDuration)
+      });
+    }
+    
+    navigate(-1); // Go to previous page
+  };
 
   const handleAnswer = (choice) => {
     const isCorrect = choice === currentItem.touch;
     new Audio(isCorrect ? '/correct.mp3' : '/incorrect.mp3').play();
 
     setFeedback(isCorrect ? 'Correct! ✅' : 'Oops! ❌');
-    if (isCorrect) setScore((prev) => prev + 1);
+    if (isCorrect) {
+      setScore((prev) => prev + 1);
+      setCorrectAnswers((prev) => prev + 1);
+    } else {
+      setWrongAnswers((prev) => prev + 1);
+    }
 
     setTimeout(() => {
       setFeedback('');
@@ -94,6 +146,9 @@ const TouchGame = () => {
 
   return (
     <div className="touchgame-container">
+      <button className="back-button-game" onClick={handleBack}>
+        ← Back
+      </button>
       <div className="touchgame-header">
         <h2>Touch Identifier Game</h2>
         <p>Score: {score}</p>
@@ -117,8 +172,8 @@ const TouchGame = () => {
       </div>
 
       <div className="touchgame-buttons">
-        <button className="good" onClick={() => handleAnswer('good')}>✅ Good Touch</button>
-        <button className="bad" onClick={() => handleAnswer('bad')}>❌ Bad Touch</button>
+        <button className="good" onClick={() => handleAnswer('good')}>✅ Good</button>
+        <button className="bad" onClick={() => handleAnswer('bad')}>❌ Bad</button>
       </div>
     </div>
   );
