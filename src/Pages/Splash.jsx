@@ -9,9 +9,11 @@ const Splash = () => {
   const [progress, setProgress] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
+  const [showDisclaimer, setShowDisclaimer] = useState(true);
   const [videoLoading, setVideoLoading] = useState(true);
   const [videoError, setVideoError] = useState(false);
   const videoRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const sliderRef = useRef(null);
   const draggerRef = useRef(null);
@@ -76,8 +78,20 @@ const Splash = () => {
     setVideoError(false);
     const v = videoRef.current;
     v.currentTime = 0;
-    v.play().catch(() => {});
+    v.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
   }, [showVideo]);
+
+  const togglePlay = (e) => {
+    e && e.stopPropagation();
+    if (!videoRef.current) return;
+    const v = videoRef.current;
+    if (v.paused) {
+      v.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
+    } else {
+      v.pause();
+      setIsPlaying(false);
+    }
+  };
 
   const handleStartGame = () => {
     // Redirect to login instead of home
@@ -187,21 +201,64 @@ const Splash = () => {
               )}
 
               {/* Fullscreen video container - video covers viewport with letterboxing */}
-              <video
-                ref={videoRef}
-                src="/videos/startup.mp4"
-                className="w-full h-full object-contain"
-                onEnded={handleVideoComplete}
-                onCanPlay={handleVideoCanPlay}
-                onLoadedData={handleVideoCanPlay}
-                onError={handleVideoError}
-                onWaiting={() => setVideoLoading(true)}
-                onPlaying={() => setVideoLoading(false)}
-                playsInline
-                controls={false}
-                preload="auto"
-                aria-label="Startup video"
-              />
+              <div className="relative w-full h-full">
+                <video
+                  ref={videoRef}
+                  src="/videos/startup.mp4"
+                  className="w-full h-full object-contain"
+                  onEnded={handleVideoComplete}
+                  onCanPlay={handleVideoCanPlay}
+                  onLoadedData={handleVideoCanPlay}
+                  onError={handleVideoError}
+                  onWaiting={() => setVideoLoading(true)}
+                  onPlaying={() => { setVideoLoading(false); setIsPlaying(true); }}
+                  onPause={() => setIsPlaying(false)}
+                  playsInline
+                  preload="auto"
+                  aria-label="Startup video"
+                />
+
+                {/* Centered play/pause overlay button (larger) */}
+                {!videoLoading && !videoError && (
+                  <div
+                    className="absolute inset-0 flex items-center justify-center z-60 pointer-events-none"
+                    onClick={(e) => { /* clicks pass to button only */ }}
+                  >
+                    <button
+                      onClick={togglePlay}
+                      className="pointer-events-auto bg-white bg-opacity-95 hover:bg-opacity-100 w-20 h-20 p-6 rounded-full shadow-2xl text-pink-600 text-4xl flex items-center justify-center"
+                      aria-label={isPlaying ? 'Pause video' : 'Play video'}
+                    >
+                      {isPlaying ? '❚❚' : '▶'}
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* Disclaimer overlay (shows on video start) */}
+              {showDisclaimer && (
+                <div className="absolute inset-0 z-70 flex items-center justify-center bg-black bg-opacity-70">
+                  <div className="bg-white rounded-lg p-8 max-w-lg text-center shadow-xl">
+                    <h3 className="text-2xl font-bold text-pink-700 mb-3">Courtesy Notice</h3>
+                    <p className="text-base text-gray-700 mb-4">Courtesy of Punjab Government</p>
+                    <p className="text-sm text-gray-500 mb-6">This video contains educational content provided with permission.</p>
+                    <div className="flex justify-center gap-3">
+                      <button
+                        className="bg-pink-600 text-white px-6 py-3 rounded-lg mr-2 text-lg font-semibold shadow-md"
+                        onClick={() => setShowDisclaimer(false)}
+                      >
+                        Continue
+                      </button>
+                      <button
+                        className="bg-gray-200 text-gray-700 px-6 py-3 rounded-lg text-lg font-semibold shadow-sm"
+                        onClick={() => { setShowDisclaimer(false); handleVideoComplete(); }}
+                      >
+                        Skip
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Attractive Skip button positioned bottom-right like an ad */}
               <div className="absolute bottom-6 right-6 z-60">

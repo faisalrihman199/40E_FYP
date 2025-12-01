@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import './CSS/Home.css';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import IntroductionModal from '../Components/Introduction/IntroductionModal';
-import ParentalPinLogin from '../Components/Parental/ParentalPinLogin';
+
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../Contexts/AppContext';
@@ -15,8 +15,9 @@ const Home = () => {
   const [showLearningVideo, setShowLearningVideo] = useState(false);
   const [learningVideoLoading, setLearningVideoLoading] = useState(true);
   const [learningVideoError, setLearningVideoError] = useState(false);
-  const [showParentalPin, setShowParentalPin] = useState(false);
+
   const learningVideoRef = useRef(null);
+  const [learningIsPlaying, setLearningIsPlaying] = useState(false);
   const navigation = useNavigate();
 
   const baseOptions = [
@@ -175,9 +176,7 @@ const Home = () => {
                   if (originalIndex === 3 && activeIndex === index && isLoggedIn) {
                     navigation('/game');
                   }
-                  if (originalIndex === 4 && activeIndex === index) {
-                    setShowParentalPin(true);
-                  }
+                  // Parental Control - card only (no functionality)
                 }}
                 style={{
                   cursor:
@@ -212,15 +211,7 @@ const Home = () => {
       </div>
 
       {showIntroModal && <IntroductionModal onClose={() => setShowIntroModal(false)} />}
-      {showParentalPin && (
-        <ParentalPinLogin
-          onClose={() => setShowParentalPin(false)}
-          onSuccess={() => {
-            setShowParentalPin(false);
-            navigation('/parental-dashboard');
-          }}
-        />
-      )}
+
 
       {/* Learning video overlay (skippable) */}
       {showLearningVideo && (
@@ -241,26 +232,51 @@ const Home = () => {
             </div>
           )}
 
-          <video
-            ref={learningVideoRef}
-            src="/videos/learning.mp4"
-            className="w-full h-full object-contain"
-            onEnded={() => { setShowLearningVideo(false); navigation('/learning'); }}
-            onCanPlay={() => { setLearningVideoLoading(false); setLearningVideoError(false); }}
-            onLoadedData={() => { setLearningVideoLoading(false); setLearningVideoError(false); }}
-            onError={() => { 
-              setLearningVideoError(true); 
-              setLearningVideoLoading(false);
-              setTimeout(() => { setShowLearningVideo(false); navigation('/learning'); }, 2000);
-            }}
-            onWaiting={() => setLearningVideoLoading(true)}
-            onPlaying={() => setLearningVideoLoading(false)}
-            playsInline
-            controls={false}
-            preload="auto"
-            aria-label="Learning intro video"
-            autoPlay
-          />
+          <div className="relative w-full h-full">
+            <video
+              ref={learningVideoRef}
+              src="/videos/learning.mp4"
+              className="w-full h-full object-contain"
+              onEnded={() => { setShowLearningVideo(false); navigation('/learning'); }}
+              onCanPlay={() => { setLearningVideoLoading(false); setLearningVideoError(false); }}
+              onLoadedData={() => { setLearningVideoLoading(false); setLearningVideoError(false); }}
+              onError={() => { 
+                setLearningVideoError(true); 
+                setLearningVideoLoading(false);
+                setTimeout(() => { setShowLearningVideo(false); navigation('/learning'); }, 2000);
+              }}
+              onWaiting={() => setLearningVideoLoading(true)}
+              onPlaying={() => { setLearningVideoLoading(false); setLearningIsPlaying(true); }}
+              onPause={() => setLearningIsPlaying(false)}
+              playsInline
+              preload="auto"
+              aria-label="Learning intro video"
+              autoPlay
+            />
+
+            {/* Centered play/pause overlay for learning video (larger) */}
+            {!learningVideoLoading && !learningVideoError && (
+              <div className="absolute inset-0 flex items-center justify-center z-60 pointer-events-none">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (!learningVideoRef.current) return;
+                    const v = learningVideoRef.current;
+                    if (v.paused) {
+                      v.play().then(() => setLearningIsPlaying(true)).catch(() => setLearningIsPlaying(false));
+                    } else {
+                      v.pause();
+                      setLearningIsPlaying(false);
+                    }
+                  }}
+                  className="pointer-events-auto bg-white bg-opacity-95 hover:bg-opacity-100 w-20 h-20 p-6 rounded-full shadow-2xl text-pink-600 text-4xl flex items-center justify-center"
+                  aria-label={learningIsPlaying ? 'Pause video' : 'Play video'}
+                >
+                  {learningIsPlaying ? '❚❚' : '▶'}
+                </button>
+              </div>
+            )}
+          </div>
           <div className="absolute bottom-6 right-6 z-60">
             <button
               onClick={() => { setShowLearningVideo(false); navigation('/learning'); }}

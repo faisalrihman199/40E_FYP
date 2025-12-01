@@ -31,7 +31,7 @@ const Game = () => {
       cssName: '/CSS/Man.css',
       type: 'man',
     },
-    child: {
+    boy: {
       image_path: '/baby.webp',
       cssName: '/CSS/Baby.css',
       type: 'baby',
@@ -59,7 +59,7 @@ const Game = () => {
     body: { icon: '🧍‍♂️', desc: 'Play touch game with body zones.' },
     'man': { icon: '👨', desc: 'Body model of a man.' },
     'woman': { icon: '👩', desc: 'Body model of a woman.' },
-    'child': { icon: '👶', desc: 'Body model of a baby.' },
+    'boy': { icon: '👦', desc: 'Body model of a boy.' },
     'girl': { icon: '👧', desc: 'Body model of a young girl.' },
     
     'touch by man': { icon: '👨', desc: 'Play touch scenarios with men.' },
@@ -107,7 +107,7 @@ const Game = () => {
   }
 
   if (step === 'userGender') {
-    return renderCards(['Girl', 'Child'], (selectedGender) => {
+    return renderCards(['Girl', 'Boy'], (selectedGender) => {
       setUserGender(selectedGender);
       setStep('touchByType');
     });
@@ -129,7 +129,7 @@ const Game = () => {
   if (step === 'body' && touchByType && userGender) {
     // Always show the user's selected body type (girl or child)
     // The touch scenario determines if it's stranger or known
-    let bodyType = userGender === 'girl' ? 'girl' : 'child';
+    let bodyType = userGender === 'girl' ? 'girl' : 'boy';
     let subtype = 'stranger'; // Always stranger for man/woman touches
 
     const props = bodyLearning[bodyType];

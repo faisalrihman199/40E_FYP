@@ -45,7 +45,11 @@ const ImageBodyTouch = ({
   subtype = 'stranger',
   game = false,
   onBack,
-  touchByType = null
+  touchByType = null,
+  tutorial = false,
+  identifyMode = false,
+  maxAttempts = 10,
+  onContinue
 }) => {
   const [touched, setTouched] = useState(null);
   const [touchResult, setTouchResult] = useState(null);
@@ -53,6 +57,7 @@ const ImageBodyTouch = ({
   const [correctCount, setCorrectCount] = useState(0);
   const [wrongCount, setWrongCount] = useState(0);
   const [attempts, setAttempts] = useState(0);
+  const [finished, setFinished] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [glowPosition, setGlowPosition] = useState(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -149,9 +154,44 @@ const ImageBodyTouch = ({
 
   // ✅ Handle touch evaluation
   const evaluateTouch = (zone, event) => {
+    const bodyWrapper = event.currentTarget.parentElement;
+    const rect = bodyWrapper.getBoundingClientRect();
+    const clickX = event.clientX - rect.left;
+    const clickY = event.clientY - rect.top;
+
+    setTouched(zone);
+    setGlowPosition({ x: clickX, y: clickY });
+
+    // IDENTIFY MODE: the child should click private parts -> that's correct
+    if (identifyMode) {
+      const isCorrect = zone === 'Private Part';
+      setAttempts(prev => Math.min(maxAttempts, prev + 1));
+      if (isCorrect) setCorrectCount(prev => prev + 1);
+      else setWrongCount(prev => prev + 1);
+
+      setTouchResult({
+        safe: isCorrect,
+        reason: isCorrect ? 'Correct — that is a private area.' : 'Not a private area. Try again.'
+      });
+
+      // Play feedback audio
+      if (audioRef.current) { audioRef.current.pause(); audioRef.current.currentTime = 0; }
+      const audio = new Audio(isCorrect ? '/correct.mp3' : '/incorrect.mp3');
+      audioRef.current = audio;
+      audio.play().catch(() => {});
+
+      // Finish when attempts reach maxAttempts
+      setTimeout(() => setGlowPosition(null), 1200);
+      setTimeout(() => {
+        if (attempts + 1 >= maxAttempts) setFinished(true);
+      }, 300);
+
+      return;
+    }
+
+    // Normal evaluation (learning/game) — use touchRules logic
     const rule = touchRules[zone];
     let isSafe = false;
-
     if (!rule) {
       isSafe = false;
     } else if (typeof rule.safe === 'boolean') {
@@ -160,42 +200,34 @@ const ImageBodyTouch = ({
       isSafe = rule.safeIf(type, subtype);
     }
 
-    const bodyWrapper = event.currentTarget.parentElement;
-    const rect = bodyWrapper.getBoundingClientRect();
-    const clickX = event.clientX - rect.left;
-    const clickY = event.clientY - rect.top;
-
-    setTouched(zone);
-    setGlowPosition({ x: clickX, y: clickY });
     setTouchResult({
       safe: isSafe,
-      reason: rule?.reason || "No specific rule found for this area."
+      reason: rule?.reason || 'No specific rule found for this area.'
     });
 
-    // Update score in game mode
+    // Update score in game mode with requested +/-1 per attempt
     if (game) {
-      setAttempts(prev => prev + 1);
-      if (isSafe) {
-        setCorrectCount(prev => prev + 1);
-        setScore(prev => prev + 10); // 10 points per correct answer
-      } else {
-        setWrongCount(prev => prev + 1);
-        setScore(prev => Math.max(0, prev - 5)); // -5 points per wrong answer (min 0)
-      }
-    }
+      setAttempts(prev => Math.min(maxAttempts, prev + 1));
+      if (isSafe) setCorrectCount(prev => prev + 1);
+      else setWrongCount(prev => prev + 1);
 
-    // Remove glow after 2 seconds
-    setTimeout(() => setGlowPosition(null), 2000);
+      // Score is number of correct answers (clamped 0..maxAttempts)
+      setScore(prev => {
+        const next = isSafe ? prev + 1 : Math.max(0, prev - 1);
+        return Math.max(0, Math.min(maxAttempts, next));
+      });
 
-    // Play audio in game mode
-    if (game) {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
-      }
+      // feedback audio
+      if (audioRef.current) { audioRef.current.pause(); audioRef.current.currentTime = 0; }
       const audio = new Audio(isSafe ? '/correct.mp3' : '/incorrect.mp3');
       audioRef.current = audio;
       audio.play().catch(() => {});
+
+      // Finish when attempts reach maxAttempts
+      setTimeout(() => setGlowPosition(null), 1200);
+      setTimeout(() => {
+        if (attempts + 1 >= maxAttempts) setFinished(true);
+      }, 300);
     }
   };
 
@@ -254,7 +286,14 @@ const ImageBodyTouch = ({
             key={index}
             className={`zone ${cssClassMap(zone === 'Private Part' ? 'private' : zone)}`}
             onClick={(event) => evaluateTouch(zone, event)}
-          />
+          >
+            {/* Tutorial highlight: show translucent box + label over private parts */}
+            {tutorial && zone === 'Private Part' && (
+              <div className="tutorial-overlay" style={{pointerEvents: 'none'}}>
+                <div className="tutorial-box">Private Area</div>
+              </div>
+            )}
+          </div>
         ))}
 
         {/* Click glow */}
@@ -308,6 +347,35 @@ const ImageBodyTouch = ({
             </>
           )}
         </p>
+      )}
+
+      {/* Tutorial footer: continue button */}
+      {tutorial && (
+        <div className="tutorial-footer">
+          <p className="tutorial-instruction">This highlights private parts. Click Continue when ready to try identifying them.</p>
+          <div className="tutorial-actions">
+            <button className="btn-primary" onClick={() => onContinue && onContinue()}>Start Test</button>
+            <button className="btn-secondary" onClick={onBack}>Back</button>
+          </div>
+        </div>
+      )}
+
+      {/* Finished modal for identifyMode or game */}
+      {finished && (
+        <div className="result-overlay">
+          <div className="result-card">
+            <h3>Result</h3>
+            <p>Correct: {correctCount} / {maxAttempts}</p>
+            <p>Wrong: {wrongCount}</p>
+            <p className="result-emoji" style={{fontSize: '2rem'}}>
+              {correctCount >= 7 ? '😍' : correctCount >= 4 ? '😊' : '😔'}
+            </p>
+            <div className="result-actions">
+              <button className="btn-primary" onClick={() => window.location.reload()}>Retry</button>
+              <button className="btn-secondary" onClick={onBack}>Back</button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

@@ -4,13 +4,12 @@ import helmet from 'helmet';
 import dotenv from 'dotenv';
 import { sequelize } from './config/database.js';
 import logger from './config/logger.js';
-import rateLimiter from './middlewares/rateLimiter.js';
 import errorHandler from './middlewares/errorHandler.js';
 
 // Import routes
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
-import parentalRoutes from './routes/parentalRoutes.js';
+
 import progressRoutes from './routes/progressRoutes.js';
 
 // Load environment variables
@@ -27,12 +26,11 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(rateLimiter);
 
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api/parental', parentalRoutes);
+
 app.use('/api/progress', progressRoutes);
 
 // Health check

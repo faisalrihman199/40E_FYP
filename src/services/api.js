@@ -155,39 +155,6 @@ export const userService = {
   }
 };
 
-// Parental Control Service
-export const parentalService = {
-  verifyPin: async (pin) => {
-    const response = await api.post('/parental/verify-pin', { pin });
-    return response.data;
-  },
-
-  updatePin: async (currentPin, newPin) => {
-    const response = await api.put('/parental/update-pin', { currentPin, newPin });
-    return response.data;
-  },
-
-  getSettings: async () => {
-    const response = await api.get('/parental/settings');
-    return response.data;
-  },
-
-  updateSettings: async (settings) => {
-    const response = await api.put('/parental/settings', settings);
-    return response.data;
-  },
-
-  getDashboard: async () => {
-    const response = await api.get('/parental/dashboard');
-    return response.data;
-  },
-
-  clearData: async (pin) => {
-    const response = await api.post('/parental/clear-data', { pin });
-    return response.data;
-  }
-};
-
 // Progress Tracking Service
 export const progressService = {
   logGameSession: async (gameData) => {

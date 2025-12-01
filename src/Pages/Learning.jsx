@@ -38,7 +38,7 @@ const Learning = () => {
       cssName: '/CSS/Man.css',
       type: 'man',
     },
-    child: {
+    boy: {
       image_path: '/baby.webp',
       cssName: '/CSS/Baby.css',
       type: 'baby',
@@ -65,7 +65,7 @@ const Learning = () => {
     
     man: { icon: '👨', desc: 'Explore body safety for men.' },
     woman: { icon: '👩', desc: 'Explore body safety for women.' },
-    child: { icon: '👶', desc: 'Body safety with a baby model.' },
+    boy: { icon: '👦', desc: 'Body safety with a boy model.' },
     girl: { icon: '👧', desc: 'Understand safe zones for young girls.' },
     
     'touch by man': { icon: '👨', desc: 'Learn about touch scenarios with men.' },
@@ -115,7 +115,7 @@ const Learning = () => {
   }
 
   if (step === 'userGender') {
-    return renderCards(['Girl', 'Child'], (selectedGender) => {
+    return renderCards(['Girl', 'Boy'], (selectedGender) => {
       setUserGender(selectedGender);
       setStep('touchByType');
     });
@@ -142,13 +142,13 @@ const Learning = () => {
     return <LearningComponent dataList={learningItems} onBack={goBack} />;
   }
 
+  // Two-step learning: tutorial -> interactive identification -> normal learning
   if (step === 'bodyLearning' && touchByType && userGender) {
-    // Always show the user's selected body type (girl or child)
-    // The touch scenario determines if it's stranger or known
-    let bodyType = userGender === 'girl' ? 'girl' : 'child';
-    let subtype = 'stranger'; // Always stranger for man/woman touches
-    
+    let bodyType = userGender === 'girl' ? 'girl' : 'boy';
+    let subtype = 'stranger';
     const props = bodyLearning[bodyType];
+
+    // Show tutorial first: highlights private areas and explains
     return (
       <BoxyBody
         image_path={props.image_path}
@@ -156,6 +156,27 @@ const Learning = () => {
         type={props.type}
         subtype={subtype}
         touchByType={touchByType}
+        tutorial={true}
+        onContinue={() => setStep('interactiveTest')}
+        onBack={goBack}
+      />
+    );
+  }
+
+  if (step === 'interactiveTest' && touchByType && userGender) {
+    let bodyType = userGender === 'girl' ? 'girl' : 'boy';
+    let subtype = 'stranger';
+    const props = bodyLearning[bodyType];
+
+    return (
+      <BoxyBody
+        image_path={props.image_path}
+        cssName={props.cssName}
+        type={props.type}
+        subtype={subtype}
+        touchByType={touchByType}
+        identifyMode={true}
+        maxAttempts={10}
         onBack={goBack}
       />
     );

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { authService, userService, parentalService, progressService } from '../services/api';
+import { authService, userService, progressService } from '../services/api';
 
 const AppContext = createContext();
 
@@ -224,13 +224,7 @@ const AppProvider = ({ children }) => {
     getUser,
     updateUser,
     
-    // Parental functions
-    verifyParentalPin,
-    getParentalDashboard,
-    getDashboard,
-    updateParentalSettings,
-    updateParentalPin,
-    clearAllData,
+
     
     // Progress functions
     logGameActivity,
@@ -241,7 +235,7 @@ const AppProvider = ({ children }) => {
     // Services (for direct access if needed)
     authService,
     userService,
-    parentalService,
+
     progressService
   };
 

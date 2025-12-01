@@ -12,7 +12,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 import Learning from './Pages/Learning';
 import Game from './Pages/Game';
-import ParentalDashboard from './Pages/ParentalDashboard';
+
 import { useAppContext } from './Contexts/AppContext';
 
 // Protected Route Component
@@ -67,11 +67,7 @@ const App = () => {
             <Game />
           </ProtectedRoute>
         } />
-        <Route path="/parental-dashboard" element={
-          <ProtectedRoute>
-            <ParentalDashboard />
-          </ProtectedRoute>
-        } />
+
       </Routes>
       <ToastContainer />
     </BrowserRouter>
