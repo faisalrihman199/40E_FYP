@@ -4,9 +4,7 @@ import Splash from './Pages/Splash';
 import Home from './Pages/Home';
 import Login from './Pages/Login';
 import Signup from './Pages/Signup';
-import VerifyEmail from './Pages/VerifyEmail';
-import ForgotPassword from './Pages/ForgotPassword';
-import ResetPassword from './Pages/ResetPassword';
+
 import { ToastContainer } from 'react-toastify';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -47,9 +45,7 @@ const App = () => {
         <Route path="/" element={<Splash />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/verify-email" element={<VerifyEmail />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
+
         
         {/* Protected Routes */}
         <Route path="/home" element={

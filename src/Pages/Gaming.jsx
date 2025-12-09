@@ -166,8 +166,8 @@ const TouchGame = () => {
       </div>
 
       <div className="touchgame-description">
-        <h3>{currentItem.title}</h3>
-        <p>{currentItem.description}</p>
+        <h3 style={{fontSize: '2.5rem', fontWeight: '900'}}>{currentItem.title}</h3>
+        <p style={{fontSize: '1.5rem', fontWeight: '700'}}>{currentItem.description}</p>
         {feedback && <p className="feedback">{feedback}</p>}
       </div>
 

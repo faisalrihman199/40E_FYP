@@ -312,25 +312,13 @@
     z-index: 1;
   }
 
-  /* Tutorial overlays for BoxyBody */
+  /* Tutorial overlays for BoxyBody (disabled - label handled by body CSS) */
   .body-wrapper .tutorial-overlay {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
-    z-index: 15;
+    display: none !important;
   }
 
   .body-wrapper .tutorial-box {
-    background: rgba(255, 99, 132, 0.18);
-    color: #7d2e68;
-    padding: 8px 12px;
-    border-radius: 10px;
-    font-weight: 800;
-    border: 2px solid rgba(255,105,180,0.25);
-    box-shadow: 0 8px 30px rgba(255,105,180,0.15);
+    display: none !important;
   }
 
   .tutorial-footer {

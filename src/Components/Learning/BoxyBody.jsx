@@ -2,23 +2,39 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useAppContext } from '../../Contexts/AppContext';
 
 const touchRules = {
-  Head: { safe: true, reason: "Head touches like patting are usually safe." },
-  Mouth: { safe: true, reason: "Touching the mouth may be safe if consensual and friendly." },
+  Head: { 
+    safe: false,
+    safeIf: (type) => type !== 'girl',
+    reason: "Head touches like patting are usually safe, but for girls, limit touch to hands only." 
+  },
+  Mouth: { 
+    safe: false,
+    safeIf: (type) => type !== 'girl',
+    reason: "Touching the mouth may be safe if consensual and friendly, but for girls, limit touch to hands only." 
+  },
   Neck: { safe: false, reason: "The neck is a sensitive area and usually considered private." },
   Chest: {
-    safeIf: (type, subtype) => type === 'baby' || subtype === 'known',
-    reason: "Touching the chest is only okay during care or with someone trusted."
+    safeIf: (type, subtype) => type === 'baby' || (type !== 'girl' && subtype === 'known'),
+    reason: "Touching the chest is only okay during care or with someone trusted. For girls, this area is private."
   },
   Belly: {
-    safeIf: (type) => type === 'baby',
-    reason: "Touching the belly is okay for babies, but not appropriate for older individuals unless trusted."
+    safeIf: (type) => type === 'baby' || type !== 'girl',
+    reason: "Touching the belly is okay for babies, but not appropriate for girls or older individuals unless trusted."
   },
   'Private Part': {
     safe: false,
     reason: "Private parts should never be touched except by a doctor with permission."
   },
-  Right_Arm: { safe: true, reason: "Touching arms is typically safe in friendly gestures." },
-  Left_Arm: { safe: true, reason: "Touching arms is typically safe in friendly gestures." },
+  Right_Arm: { 
+    safe: false,
+    safeIf: (type) => type !== 'girl',
+    reason: "Touching arms is typically safe in friendly gestures, but for girls, limit touch to hands only." 
+  },
+  Left_Arm: { 
+    safe: false,
+    safeIf: (type) => type !== 'girl',
+    reason: "Touching arms is typically safe in friendly gestures, but for girls, limit touch to hands only." 
+  },
   Right_Hand: { safe: true, reason: "Handshakes or high-fives are friendly touches." },
   Left_Hand: { safe: true, reason: "Handshakes or high-fives are friendly touches." },
   Left_Thigh: {
@@ -29,10 +45,26 @@ const touchRules = {
     safeIf: (type, subtype) => type === 'baby',
     reason: "Touching thighs is only appropriate for babies during care."
   },
-  Left_Leg: { safe: true, reason: "Legs are generally safe to touch." },
-  Right_Leg: { safe: true, reason: "Legs are generally safe to touch." },
-  Left_Foot: { safe: true, reason: "Feet are generally not private." },
-  Right_Foot: { safe: true, reason: "Feet are generally not private." },
+  Left_Leg: { 
+    safe: false,
+    safeIf: (type) => type !== 'girl',
+    reason: "Legs are generally safe to touch, but for girls, limit touch to hands only." 
+  },
+  Right_Leg: { 
+    safe: false,
+    safeIf: (type) => type !== 'girl',
+    reason: "Legs are generally safe to touch, but for girls, limit touch to hands only." 
+  },
+  Left_Foot: { 
+    safe: false,
+    safeIf: (type) => type !== 'girl',
+    reason: "Feet are generally not private, but for girls, limit touch to hands only." 
+  },
+  Right_Foot: { 
+    safe: false,
+    safeIf: (type) => type !== 'girl',
+    reason: "Feet are generally not private, but for girls, limit touch to hands only." 
+  },
 };
 
 const cssClassMap = (zoneName) =>
@@ -171,7 +203,7 @@ const ImageBodyTouch = ({
 
       setTouchResult({
         safe: isCorrect,
-        reason: isCorrect ? 'Correct — that is a private area.' : 'Not a private area. Try again.'
+        reason: isCorrect ? 'Correct — that is a Private Area.' : 'Not a Private Area. Try again.'
       });
 
       // Play feedback audio
@@ -281,19 +313,15 @@ const ImageBodyTouch = ({
           onLoad={() => setImageLoaded(true)}
         />
 
+        {/* Girl body outline - shows whole body (except hands) is bad touch */}
+        {type === 'girl' && <div className="girl-body-outline" />}
+
         {zones.map((zone, index) => (
           <div
             key={index}
             className={`zone ${cssClassMap(zone === 'Private Part' ? 'private' : zone)}`}
             onClick={(event) => evaluateTouch(zone, event)}
-          >
-            {/* Tutorial highlight: show translucent box + label over private parts */}
-            {tutorial && zone === 'Private Part' && (
-              <div className="tutorial-overlay" style={{pointerEvents: 'none'}}>
-                <div className="tutorial-box">Private Area</div>
-              </div>
-            )}
-          </div>
+          />
         ))}
 
         {/* Click glow */}

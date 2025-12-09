@@ -121,12 +121,36 @@
     width: 80px;
     height: 40px;
   }
+  
+  /* Boy private zone - compact and smaller */
   .zone.private {
-    top: 180px;
-    left: 110px;
-    width: 90px;
-    height: 50px;
+    top: 186px;
+    left: 120px;
+    width: 65px;
+    height: 40px;
+    background: linear-gradient(135deg, rgba(156, 39, 176, 0.4), rgba(123, 31, 162, 0.5));
+    border: 2px solid #6A1B53;
+    border-radius: 6px;
+    z-index: 6;
+    box-shadow: 0 2px 6px rgba(106, 27, 83, 0.4);
   }
+  
+  /* Private Area label for boy - smaller text */
+  .zone.private::before {
+    content: 'Private Area';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #FFF;
+    font-weight: 800;
+    font-size: 0.6rem;
+    text-align: center;
+    line-height: 1.2;
+    pointer-events: none;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+  }
+  
   .zone.right-thigh {
     top: 230px;
     left: 120px;

@@ -97,7 +97,7 @@ const Signup = () => {
       
       if (result.success) {
         setMessage({ 
-          text: '✅ Registration successful! Please check your email to verify your account.', 
+          text: '✅ Registration successful! You can now login.', 
           type: 'success' 
         });
         setFormData({

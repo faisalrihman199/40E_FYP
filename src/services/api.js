@@ -90,26 +90,6 @@ export const authService = {
     }
   },
 
-  verifyEmail: async (token) => {
-    const response = await api.post('/auth/verify-email', { token });
-    return response.data;
-  },
-
-  resendVerification: async (email) => {
-    const response = await api.post('/auth/resend-verification', { email });
-    return response.data;
-  },
-
-  forgotPassword: async (email) => {
-    const response = await api.post('/auth/forgot-password', { email });
-    return response.data;
-  },
-
-  resetPassword: async (token, newPassword) => {
-    const response = await api.post('/auth/reset-password', { token, newPassword });
-    return response.data;
-  },
-
   getCurrentUser: () => {
     const userStr = localStorage.getItem('user');
     return userStr ? JSON.parse(userStr) : null;
@@ -133,24 +113,6 @@ export const userService = {
       const user = response.data.data.user;
       localStorage.setItem('user', JSON.stringify(user));
     }
-    return response.data;
-  },
-
-  changePassword: async (currentPassword, newPassword) => {
-    const response = await api.put('/users/change-password', {
-      currentPassword,
-      newPassword
-    });
-    return response.data;
-  },
-
-  deactivateAccount: async (password) => {
-    const response = await api.post('/users/deactivate', { password });
-    return response.data;
-  },
-
-  deleteAccount: async (password) => {
-    const response = await api.delete('/users/delete', { data: { password } });
     return response.data;
   }
 };

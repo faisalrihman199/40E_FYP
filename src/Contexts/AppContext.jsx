@@ -69,23 +69,6 @@ const AppProvider = ({ children }) => {
 
   const getUser = () => user;
 
-  const updateUser = async (updates) => {
-    try {
-      const response = await userService.updateProfile(updates);
-      if (response.success) {
-        setUser(response.data.user);
-        return { success: true, data: response.data };
-      }
-      return { success: false, message: response.message };
-    } catch (error) {
-      console.error('Update user error:', error);
-      return { 
-        success: false, 
-        message: error.response?.data?.message || 'Update failed.' 
-      };
-    }
-  };
-
   // Parental control functions
   const verifyParentalPin = async (pin) => {
     try {
@@ -222,7 +205,6 @@ const AppProvider = ({ children }) => {
     register,
     logout,
     getUser,
-    updateUser,
     
 
     

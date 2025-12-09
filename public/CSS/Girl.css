@@ -67,6 +67,7 @@
     position: absolute;
   }
   
+  /* Girl body zones - whole body is bad touch except hands */
   .zone.head {
     top: 80px;
     left: 100px;
@@ -91,6 +92,7 @@
     width: 80px;
     height: 30px;
   }
+  /* Hands are safe zones for girl */
   .zone.right-hand {
     top: 80px;
     left: 10px;
@@ -121,11 +123,50 @@
     width: 80px;
     height: 40px;
   }
+  
+  /* Girl body outline - shows whole body is bad touch except hands */
+  .girl-body-outline {
+    position: absolute;
+    top: 75px;
+    left: 50px;
+    width: 200px;
+    height: 360px;
+    border: 1px solid #FF5722;
+    
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(156, 39, 176, 0.4), rgba(123, 31, 162, 0.5));
+
+    pointer-events: none;
+    z-index: 1;
+    box-shadow: 0 0 0 2px rgba(255, 87, 34, 0.4);
+  }
+  
+  /* Private zone for girl - actual private area only */
   .zone.private {
-    top: 230px;
-    left: 110px;
-    width: 90px;
-    height: 60px;
+    top: 205px;
+    left: 95px;
+    width: 110px;
+    height: 95px;
+    /* background: linear-gradient(135deg, rgba(156, 39, 176, 0.4), rgba(123, 31, 162, 0.5)); */
+    border-radius: 10px;
+    z-index: 6;
+    /* box-shadow: 0 2px 8px rgba(106, 27, 83, 0.4); */
+  }
+  
+  /* Private Area label - clean and centered */
+  .zone.private::before {
+    content: 'Private Area';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #FFF;
+    font-weight: 900;
+    font-size: 1.1rem;
+    text-align: center;
+    pointer-events: none;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    white-space: nowrap;
   }
   
   .zone.right-leg {
